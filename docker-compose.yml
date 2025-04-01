@@ -3,39 +3,41 @@ services:
     build:
       dockerfile: Dockerfile
     container_name: mt5
+    environment:
+      - SERVICE_FQDN_MT5_3000
     volumes:
       - ./config:/config
-    networks:
-      - coolify
-      - default
+    # networks:
+    #   - coolify
+    #   - default
     # env_file:
     #   - .env
     restart: unless-stopped
-    labels:
-      # Enable Traefik for this service
-      traefik.enable: true
-      traefik.docker.network: coolify
+    # labels:
+    #   # Enable Traefik for this service
+    #   traefik.enable: true
+    #   traefik.docker.network: coolify
 
-      # Router for vnc.mt5.${domain} (Port 3000)
-      traefik.http.routers.vnc-mt5-http.rule: Host(`${VNC_DOMAIN}`)
-      traefik.http.routers.vnc-mt5-http.entrypoints: http
-      traefik.http.routers.vnc-mt5-http.middlewares: https-redirect
+    #   # Router for vnc.mt5.${domain} (Port 3000)
+    #   traefik.http.routers.vnc-mt5-http.rule: Host(`${VNC_DOMAIN}`)
+    #   traefik.http.routers.vnc-mt5-http.entrypoints: http
+    #   traefik.http.routers.vnc-mt5-http.middlewares: https-redirect
 
-      traefik.http.routers.vnc-mt5-https.rule: Host(`${VNC_DOMAIN}`)
-      traefik.http.routers.vnc-mt5-https.entrypoints: https
-      traefik.http.routers.vnc-mt5-https.tls: true
-      traefik.http.routers.vnc-mt5-https.tls.certresolver: le
-      traefik.http.routers.vnc-mt5-https.service: vnc-mt5-service
+    #   traefik.http.routers.vnc-mt5-https.rule: Host(`${VNC_DOMAIN}`)
+    #   traefik.http.routers.vnc-mt5-https.entrypoints: https
+    #   traefik.http.routers.vnc-mt5-https.tls: true
+    #   traefik.http.routers.vnc-mt5-https.tls.certresolver: le
+    #   traefik.http.routers.vnc-mt5-https.service: vnc-mt5-service
 
-      traefik.http.services.vnc-mt5-service.loadbalancer.server.port: 3000
+    #   traefik.http.services.vnc-mt5-service.loadbalancer.server.port: 3000
     # depends_on:
     #   - traefik-test
 
 volumes:
   coolify-certificates: # Persistent volume for certificates
 
-networks:
-  default:
-    driver: bridge
-  coolify:
-    external: true
+# networks:
+#   default:
+#     driver: bridge
+#   coolify:
+#     external: true
