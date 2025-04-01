@@ -6,15 +6,15 @@ services:
     volumes:
       - ./config:/config
     networks:
-      - traefik-public
+      - coolify
       - default
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     restart: unless-stopped
     labels:
       # Enable Traefik for this service
       traefik.enable: true
-      traefik.docker.network: traefik-public
+      traefik.docker.network: coolify
 
       # Router for vnc.mt5.${domain} (Port 3000)
       traefik.http.routers.vnc-mt5-http.rule: Host(`${VNC_DOMAIN}`)
@@ -28,14 +28,14 @@ services:
       traefik.http.routers.vnc-mt5-https.service: vnc-mt5-service
 
       traefik.http.services.vnc-mt5-service.loadbalancer.server.port: 3000
-    depends_on:
-      - traefik
+    # depends_on:
+    #   - traefik
 
 volumes:
-  traefik-public-certificates: # Persistent volume for certificates
+  coolify-certificates: # Persistent volume for certificates
 
 networks:
   default:
     driver: bridge
-  traefik-public:
+  coolify:
     external: true
